@@ -6,7 +6,7 @@ const markup = `
 <use href="./images/sprite.svg#icon-cross-white"></use>
 </svg>
 <p class="modal-window-title">Заповніть форму, щоб орендувати авто</p>
-<form >
+<form action = "mail.php" method = "POST">
 <input class="contacts-form-input modal-window-input" type="text" name="name"  placeholder="Ваше ім’я">
 <div class="icon-languages form-languages">
     <div class="js-modal-open-code js-modal-close-code" role="list" aria-expanded="false">
@@ -45,7 +45,7 @@ const markup = `
     </div>
     <input class="contacts-form-input form-input-number modal-window-input modal-window-input-number" type="tel" name="number" >
 </div>
-<button class="contacts-form-button form-button">Відправити</button>
+<input name="send_forma" class="contacts-form-button form-button" type="submit">Відправити</input>
 <input type="checkbox" class="contacts-form-custom-chekbox modal-window-checkbox">
 <svg class="icon-checked modal-window-checkbox" width="25" height="25">
   <use href="./images/sprite.svg#icon-checkbox-green"></use>
