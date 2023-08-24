@@ -6,7 +6,7 @@ const markup = `
 <use href="./images/sprite.svg#icon-cross-white"></use>
 </svg>
 <p class="modal-window-title modal-window-title-rus">Wypełnij formularz, aby wypożyczyć samochód</p>
-<form >
+<form id="form">
 <input class="contacts-form-input modal-window-input" type="text" name="name"  placeholder="Twoje imię">
 <div class="icon-languages form-languages">
     <div class="js-modal-open-code js-modal-close-code" role="list" aria-expanded="false">
@@ -46,7 +46,7 @@ const markup = `
     <input class="contacts-form-input form-input-number modal-window-input modal-window-input-number" type="tel" name="number" >
 </div>
 <button class="contacts-form-button form-button">Wysłać</button>
-<input type="checkbox" class="contacts-form-custom-chekbox modal-window-checkbox">
+<input type="checkbox" class="contacts-form-custom-chekbox modal-window-checkbox" name="terms">
 <svg class="icon-checked modal-window-checkbox" width="25" height="25">
   <use href="./images/sprite.svg#icon-checkbox-green"></use>
 </svg>
@@ -170,7 +170,8 @@ const handleClick = () => {
   modalBtnClose.addEventListener("click", onCloseBtn);
   const modalBtnCloseWhite = document.querySelector(".js-modal-cross-btn-white")
   modalBtnCloseWhite.addEventListener("click", onCloseBtn)
-
+  const sendClose = document.querySelector(".form-button")
+  sendClose.addEventListener("click", onCloseBtn)
 
   function onClose(event) {
     if (event.key === "Escape") {
@@ -195,6 +196,8 @@ function  initializeModal(){
   const rulesModalOpenButton = document.querySelector(".js-rules-modal-open")
   rulesModalOpenButton.addEventListener("click", handleRulesSpanClick)
 
+    const form = document.getElementById("form")
+
     const switcher = document.querySelector(".js-modal-languages-container")
     const arrowClose = document.querySelector(".js-modal-close-code")
     const arrowOpen = document.querySelector(".js-modal-open-code")
@@ -202,6 +205,30 @@ function  initializeModal(){
    const arrowUp =document.querySelector(".modal-icon-arrow_up")
    const arrowDown = document.querySelector(".modal-icon-arrow_down")
    const numberSwitcher = document.querySelector(".js-modal-number-switcher")
+
+    function retrieveFromValue(e){
+      e.preventDefault();
+
+      const flagElement = form.querySelector('.form-languages .svg-countries');
+      const name = form.querySelector(`[name="name"]`),
+          number = form.querySelector(`[name="number"]`),
+          terms = form.querySelector(`[name="terms"]`)
+
+      if(terms.checked && flagElement.id) {
+        const values = {
+          name:name.value,
+          number:`${switcherCode[flagElement.id]}${number.value}`,
+        }
+        emailjs.send('service_cir5nya', 'template_4uqy468' ,values,"cQGpYl8IgsaLkJO7n")
+            .then(function(response) {
+              console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+              console.log('FAILED...', error);
+            });
+      }
+    }
+
+    form.addEventListener("submit",retrieveFromValue)
 
     const toggleMenu = () => {
         const isMenuOpen =

@@ -542,6 +542,7 @@ margin-bottom: 13px;
 
 .catalog-car-price-title{
     position: absolute;
+    z-index: 1;
     bottom: 20px;
     right: 92px;
     color: var(--light-color);
@@ -563,6 +564,7 @@ margin-bottom: 13px;
 .catalog-car-overlay{
     padding-top: 60px;
     position: absolute;
+    z-index: 2;
     left: 0;
     top:0;
     width: 100%;
@@ -2044,6 +2046,7 @@ overflow-y: scroll;
 }
 /* COOKIE */
 .cookie-box{
+    display: none;
     position: fixed;
     left: 0;
     bottom: -1px;
@@ -2052,7 +2055,6 @@ overflow-y: scroll;
     padding-top: 19px;
     padding-bottom: 10px;
     padding-left: 10px;
-    display: flex;
     flex-direction: column;
     justify-content: space-around;
     gap: 10px;
@@ -2080,6 +2082,7 @@ overflow-y: scroll;
     animation: cookie-box 700ms var(--animation-cubic); 
     opacity: 0;
 }
+
 @keyframes cookie-box {
     0% {
         transform: translateY(0%);

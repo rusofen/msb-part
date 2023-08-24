@@ -6,7 +6,7 @@ const markup = `
 <use href="./images/sprite.svg#icon-cross-white"></use>
 </svg>
 <p class="modal-window-title">Заповніть форму, щоб орендувати авто</p>
-<form action = "mail.php" method = "POST">
+<form id="form">
 <input class="contacts-form-input modal-window-input" type="text" name="name"  placeholder="Ваше ім’я">
 <div class="icon-languages form-languages">
     <div class="js-modal-open-code js-modal-close-code" role="list" aria-expanded="false">
@@ -45,8 +45,8 @@ const markup = `
     </div>
     <input class="contacts-form-input form-input-number modal-window-input modal-window-input-number" type="tel" name="number" >
 </div>
-<input name="send_forma" class="contacts-form-button form-button" type="submit">Відправити</input>
-<input type="checkbox" class="contacts-form-custom-chekbox modal-window-checkbox">
+<button class="contacts-form-button form-button">Відправити</button>
+<input type="checkbox" class="contacts-form-custom-chekbox modal-window-checkbox" name="terms">
 <svg class="icon-checked modal-window-checkbox" width="25" height="25">
   <use href="./images/sprite.svg#icon-checkbox-green"></use>
 </svg>
@@ -170,7 +170,8 @@ const handleClick = () => {
   modalBtnClose.addEventListener("click", onCloseBtn);
   const modalBtnCloseWhite = document.querySelector(".js-modal-cross-btn-white")
   modalBtnCloseWhite.addEventListener("click", onCloseBtn)
-
+  const sendClose = document.querySelector(".form-button")
+  sendClose.addEventListener("click", onCloseBtn)
 
   function onClose(event) {
     if (event.key === "Escape") {
@@ -195,13 +196,50 @@ function  initializeModal(){
   const rulesModalOpenButton = document.querySelector(".js-rules-modal-open")
   rulesModalOpenButton.addEventListener("click", handleRulesSpanClick)
 
+    const form = document.getElementById("form")
+
     const switcher = document.querySelector(".js-modal-languages-container")
     const arrowClose = document.querySelector(".js-modal-close-code")
     const arrowOpen = document.querySelector(".js-modal-open-code")
 
+
    const arrowUp =document.querySelector(".modal-icon-arrow_up")
    const arrowDown = document.querySelector(".modal-icon-arrow_down")
    const numberSwitcher = document.querySelector(".js-modal-number-switcher")
+
+
+  const switcherCode = {
+    ukrainian: "+380",
+    poland: "+48",
+    russ: "+7",
+    american: "+1"
+  };
+
+  function retrieveFromValue(e){
+    e.preventDefault();
+
+    const flagElement = form.querySelector('.form-languages .svg-countries');
+    const name = form.querySelector(`[name="name"]`),
+    number = form.querySelector(`[name="number"]`),
+    terms = form.querySelector(`[name="terms"]`)
+
+    if(terms.checked && flagElement.id) {
+      const values = {
+        name:name.value,
+        number:`${switcherCode[flagElement.id]}${number.value}`,
+      }
+      emailjs.send('service_cir5nya', 'template_4uqy468' ,values,"cQGpYl8IgsaLkJO7n")
+          .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+          }, function(error) {
+            console.log('FAILED...', error);
+          });
+    }
+
+
+
+  }
+  form.addEventListener("submit",retrieveFromValue)
 
     const toggleMenu = () => {
         const isMenuOpen =
@@ -245,13 +283,6 @@ function  initializeModal(){
           <use href="./images/sprite.svg#icon-american_lang"></use>
       </svg>
     `
-  };
-
-  const switcherCode = {
-    ukrainian: "+380",
-    poland: "+48",
-    russ: "+7",
-    american: "+1"
   };
 
    const handleFlagClick = (flagId) => {

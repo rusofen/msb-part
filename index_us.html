@@ -4,30 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
 </head>
 <body>
     english page
     <script>
         (() => {
-               const flags = document.querySelectorAll('.icon-countries');
-               flags.forEach(flag => {
-           flag.addEventListener('click', () => {
-           const languageCode = flag.id; 
-           if(languageCode === "pld" || languageCode === "p"){
-               window.location.href = `index_pl.html`;
-           }
-           if(languageCode === "ukr" || languageCode === "u"){
-               window.location.href = `index.html`;
-           }
-           if(languageCode === "usa" || languageCode === "a"){
-               window.location.href = `index_us.html`;
-           }
-           if(languageCode === "rus" || languageCode === "r"){
-               window.location.href = `index_ru.html`;
-           }
-           // window.location.href = `index_${languageCode}.html`; 
-     });
-     });
+            const flags = document.querySelectorAll('.icon-countries');
+            flags.forEach(flag => {
+                flag.addEventListener('click', () => {
+                    const languageCode = flag.id;
+                    if(languageCode === "pld" || languageCode === "p"){
+                        setCookie('flag', languageCode, {secure: true})
+                        window.location.href = "index_pl.html";
+                    }
+                    if(languageCode === "ukr" || languageCode === "u"){
+                        setCookie('flag', languageCode, {secure: true})
+                        window.location.href = "index.html";
+                    }
+                    if(languageCode === "usa" || languageCode === "a"){
+                        setCookie('flag', languageCode, {secure: true})
+                        window.location.href = "index_us.html";
+                    }
+                    if(languageCode === "rus" || languageCode === "r"){
+                        setCookie('flag', languageCode, {secure: true})
+                        window.location.href = "index_ru.html";
+                    }
+                });
+            });
+            const form = document.getElementById("contact-form")
+
+            function retrieveFromValue(e){
+                e.preventDefault();
+
+                const flagElement = form.querySelector('.form-languages .svg-countries');
+                const name = form.querySelector(`[name="name"]`),
+                    number = form.querySelector(`[name="number"]`),
+                    terms = form.querySelector(`[name="terms"]`)
+
+                if(terms.checked && flagElement.id) {
+                    const values = {
+                        name:name.value,
+                        number:`${switcherCode[flagElement.id]}${number.value}`,
+                    }
+                    emailjs.send('service_cir5nya', 'template_4uqy468' ,values,"cQGpYl8IgsaLkJO7n")
+                        .then(function(response) {
+                            console.log('SUCCESS!', response.status, response.text);
+                        }, function(error) {
+                            console.log('FAILED...', error);
+                        });
+                }
+            }
+
+            form.addEventListener("submit",retrieveFromValue)
+            const cookie = document.querySelector('.cookie-button');
+            const country = document.querySelector('.header-svg-countries');
+
+            cookie.addEventListener("click",() => setCookie('flag', country.id, {secure: true}))
+
+            function setCookie(name, value, options = {}) {
+
+                options = {
+                    path: '/',
+                    ...options
+                };
+
+                if (options.expires instanceof Date) {
+                    options.expires = options.expires.toUTCString();
+                }
+
+                let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+                for (let optionKey in options) {
+                    updatedCookie += "; " + optionKey;
+                    let optionValue = options[optionKey];
+                    if (optionValue !== true) {
+                        updatedCookie += "=" + optionValue;
+                    }
+                }
+                document.cookie = updatedCookie;
+                return null
+            }
+
+            function getCookie(name) {
+                let matches = document.cookie.match(new RegExp(
+                    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                ));
+                return matches ? decodeURIComponent(matches[1]) : undefined;
+            }
+
+            window.addEventListener("load", () => {
+                const flag = getCookie("flag")
+                const cookieBox  = document.querySelector(".cookie-box")
+
+                if(!flag){
+                    cookieBox.style.display = "flex"
+                } else {
+                    if (flag === "pld" || flag === "p") {
+                        window.location.href = "index_pl.html";
+                    }
+                    if (flag === "ukr" || flag === "u") {
+                        window.location.href = "index.html";
+                    }
+                    if (flag === "rus" || flag === "r") {
+                        window.location.href = "index_ru.html";
+                    }
+                }
+            },{once:true})
    })()
    </script>
 </body>
