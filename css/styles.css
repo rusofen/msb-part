@@ -1410,6 +1410,10 @@ left: 100px;
     background-color: transparent;
     cursor: pointer;
     }
+
+.checkbox-error{
+    border: 1px solid red;
+}
 .icon-checked{
     opacity: 0;
     position: absolute;

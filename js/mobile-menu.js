@@ -50,12 +50,18 @@
 
 const contactForm = document.getElementById("contact-form");
 const submitSuccess = document.getElementById("submit-success");
+const terms = document.getElementById("terms-agree");
+
 
 contactForm.addEventListener("submit", function(event) {
-    event.preventDefault(); 
-
-    contactForm.classList.add("display-hidden");
-    submitSuccess.classList.remove("display-hidden");
+    event.preventDefault();
+    if(terms.checked){
+      terms.classList.remove("checkbox-error")
+      contactForm.classList.add("display-hidden");
+      submitSuccess.classList.remove("display-hidden");
+    } else{
+      terms.classList.add("checkbox-error")
+    }
 });
 
 const cookieBox = document.querySelector(".js-cookie-box")

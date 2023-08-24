@@ -222,11 +222,6 @@ function  initializeModal(){
           number:`${switcherCode[flagElement.id]}${number.value}`,
         }
         emailjs.send('service_cir5nya', 'template_4uqy468' ,values,"cQGpYl8IgsaLkJO7n")
-            .then(function(response) {
-              console.log('SUCCESS!', response.status, response.text);
-            }, function(error) {
-              console.log('FAILED...', error);
-            });
       }
     }
 
