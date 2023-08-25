@@ -1,3 +1,4 @@
+
 const markup = `
 <div class="modal">
 <div class="modal-window">
@@ -223,12 +224,28 @@ function  initializeModal(){
     number = form.querySelector(`[name="number"]`),
     terms = form.querySelector(`[name="terms"]`)
 
-    if(terms.checked && flagElement.id) {
-      const values = {
-        name:name.value,
-        number:`${switcherCode[flagElement.id]}${number.value}`,
-      }
-      emailjs.send('service_cir5nya', 'template_4uqy468' ,values,"cQGpYl8IgsaLkJO7n")
+    if (terms.checked && flagElement.id) {
+      const phoneNumber = `${switcherCode[flagElement.id]}${number.value}`;
+
+      // Create a FormData object to send data via AJAX
+      const formData = new FormData();
+      formData.append("name", name.value);
+      formData.append("number", phoneNumber);
+      formData.append("language", "українська");
+
+      // Create an AJAX request
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/process_form.php", true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log("Success!", xhr.responseText);
+        } else {
+          console.log("Failed...");
+        }
+      };
+
+      xhr.send(formData);
     }
 
 
